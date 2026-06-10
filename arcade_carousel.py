@@ -106,15 +106,24 @@ def load_game_data(data_path):
                 if isinstance(games, dict) and "games" in games:
                     games = games["games"]
                 if isinstance(games, list):
+                    data_dir = os.path.dirname(os.path.abspath(data_path))
                     for game in games:
                         game["accent"] = parse_color(game.get("accent", NEON_CYAN), NEON_CYAN)
                         game["bg"] = parse_color(game.get("bg", (25, 15, 35)), (25, 15, 35))
                         game["programmer"] = game.get("programmer", []) or []
                         game["banner_surf"] = load_banner(game.get("banner"))
-                        game_path = game.get("game_path", "")
-                        abs_path = os.path.abspath(os.path.join(BASE_DIR, game_path)) if game_path else None
-                        game["game_path"] = game_path
+                        game_folder = game.get("start_folder") or game.get("game_folder") or ""
+                        game_file = game.get("game_path", "")
+                        if game_folder and game_file:
+                            abs_path = os.path.abspath(os.path.join(data_dir, game_folder, game_file))
+                        elif game_file:
+                            abs_path = os.path.abspath(os.path.join(data_dir, game_file))
+                        else:
+                            abs_path = None
+                        game["game_folder"] = game_folder
+                        game["game_file"] = game_file
                         game["game_path_abs"] = abs_path
+                        game["game_cwd"] = os.path.abspath(os.path.join(data_dir, game_folder)) if game_folder else (os.path.dirname(abs_path) if abs_path else None)
                     return games
         except Exception:
             pass
@@ -267,13 +276,14 @@ def launch_game(game):
         print(f"Game path does not exist: {path}")
         return
 
+    cwd = game.get("game_cwd") or (os.path.dirname(path) if path else None)
     try:
         if path.lower().endswith(".py"):
-            subprocess.Popen([sys.executable, path], cwd=os.path.dirname(path), close_fds=True)
+            subprocess.Popen([sys.executable, path], cwd=cwd, close_fds=True)
         elif os.name == "nt":
-            subprocess.Popen(["cmd", "/c", "start", "", path], shell=False)
+            subprocess.Popen(["cmd", "/c", "start", "", path], cwd=cwd, shell=False)
         else:
-            subprocess.Popen([path], cwd=os.path.dirname(path), close_fds=True)
+            subprocess.Popen([path], cwd=cwd, close_fds=True)
     except Exception as exc:
         print(f"Failed to launch {path}: {exc}")
 

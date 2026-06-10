@@ -9,8 +9,9 @@
     "banner": "banner_default.bmp",
     "programmer": ["Bite The Byte Games", "Main: Kilian D.", "Jannis S."],
     "desc": "",
-    "game_path": "../tmb/menu.py"
-},
+    "start_folder": "../tmb",
+    "game_path": "menu.py"
+  },
   {
     "title": "THE MUDER BUTCHER",
     "genre": "ACION, FIGHTER GAME",
@@ -21,8 +22,9 @@
     "banner": "banner_default.bmp",
     "programmer": ["Bite he Byte Games", "Main: Kilian D.", "Jannis S."],
     "desc": "",
-    "game_path": "../menu.py"
-},
+    "start_folder": "..",
+    "game_path": "menu.py"
+  },
   {
     "title": "DER BUTCHER",
     "genre": "ACION, FIGHTER GAME",
@@ -33,8 +35,7 @@
     "banner": "banner_default.bmp",
     "programmer": ["Bite he Byte Games", "Main: Kilian D.", "Jannis S."],
     "desc": "",
-    "game_path": "../menu.py"
-}
-
-
+    "start_folder": "..",
+    "game_path": "menu.py"
+  }
 ]
