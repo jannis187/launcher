@@ -1,0 +1,40 @@
+[
+  {
+    "title": "THE MARAUDER BUTCHER",
+    "genre": "ACTION, FIGHTER GAME",
+    "year": "2026",
+    "players": "1P",
+    "accent": "#00fff0",
+    "bg": "#001223",
+    "banner": "banner_default.bmp",
+    "programmer": ["Bite The Byte Games", "Main: Kilian D.", "Jannis S."],
+    "desc": "",
+    "game_path": "../tmb/menu.py"
+},
+  {
+    "title": "THE MUDER BUTCHER",
+    "genre": "ACION, FIGHTER GAME",
+    "year": "2016",
+    "players": "2P",
+    "accent": "#f0fff0",
+    "bg": "#0012c3",
+    "banner": "banner_default.bmp",
+    "programmer": ["Bite he Byte Games", "Main: Kilian D.", "Jannis S."],
+    "desc": "",
+    "game_path": "../menu.py"
+},
+  {
+    "title": "DER BUTCHER",
+    "genre": "ACION, FIGHTER GAME",
+    "year": "2016",
+    "players": "2P",
+    "accent": "#f0c2f0",
+    "bg": "#0012c3",
+    "banner": "banner_default.bmp",
+    "programmer": ["Bite he Byte Games", "Main: Kilian D.", "Jannis S."],
+    "desc": "",
+    "game_path": "../menu.py"
+}
+
+
+]
