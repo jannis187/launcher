@@ -276,16 +276,43 @@ def launch_game(game):
         print(f"Game path does not exist: {path}")
         return
 
-    cwd = game.get("game_cwd") or (os.path.dirname(path) if path else None)
+    cwd = game.get("game_cwd") or os.path.dirname(path)
+
     try:
+        # Close launcher window
+        pygame.display.quit()
+
         if path.lower().endswith(".py"):
-            subprocess.Popen([sys.executable, path], cwd=cwd, close_fds=True)
+            proc = subprocess.Popen(
+                [sys.executable, path],
+                cwd=cwd,
+                close_fds=True,
+            )
         elif os.name == "nt":
-            subprocess.Popen(["cmd", "/c", "start", "", path], cwd=cwd, shell=False)
+            proc = subprocess.Popen(
+                ["cmd", "/c", "start", "/wait", "", path],
+                cwd=cwd,
+                shell=False,
+            )
         else:
-            subprocess.Popen([path], cwd=cwd, close_fds=True)
+            proc = subprocess.Popen(
+                [path],
+                cwd=cwd,
+                close_fds=True,
+            )
+
+        proc.wait()  # Block until the game exits
+
     except Exception as exc:
         print(f"Failed to launch {path}: {exc}")
+
+    finally:
+        # Recreate the display
+        pygame.display.init()
+        screen = pygame.display.set_mode((SCREEN_W, SCREEN_H))
+        pygame.display.set_caption("Game Launcher")
+
+        return screen
 
 
 # ── HEADER ─────────────────────────────────────────────────────────────────────
@@ -388,7 +415,7 @@ def main():
                     screen.blit(flash, (0, 0))
                     pygame.display.flip()
                     pygame.time.wait(120)
-                    launch_game(selected_game)
+                    screen = launch_game(selected_game)
                 elif event.key == pygame.K_ESCAPE:
                     running = False
 
