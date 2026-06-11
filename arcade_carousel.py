@@ -12,7 +12,7 @@ import sys
 import math
 
 # ── CONFIG ─────────────────────────────────────────────────────────────────────
-SCREEN_W, SCREEN_H = 1280, 1280
+SCREEN_W, SCREEN_H = 1280, 1000
 FPS = 60
 CAROUSEL_ANIM_SPEED = 5.0
 BASE_DIR = os.path.dirname(__file__)
