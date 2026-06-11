@@ -39,5 +39,16 @@
     "desc": "",
     "start_folder": "../starmans",
     "game_path": "menu.py"
+  }, {
+    "title": "KÄSEKISTE",
+    "genre": "ARCADE, JUMP AND RUN",
+    "accent": "#d9b44a",
+    "bg": "#0012c3",
+    "banner": "wallpaper_kaesekiste.png",
+    "art": "kaesekiste.png",
+    "programmer": ["Andrii M.", "Markus K., Markus M., Batuhan C."],
+    "desc": "Käsekiste ist ein fesselndes Physik-Puzzlespiel, in dem du einen rollenden Käse durch ein komplexes vertikales Labyrinth steuerst. Nutze die Schwerkraft und weiche gefährlichen Fallen aus, um zu beweisen, dass du die begehrte Leckerei direkt in die Kiste befördern kannst!",
+    "start_folder": "../kaesekiste",
+    "game_path": "main.py"
   }
 ]
