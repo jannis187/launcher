@@ -91,7 +91,7 @@ def load_banner(path):
     if key in BANNER_CACHE:
         return BANNER_CACHE[key]
     try:
-        surf = pygame.image.load(key).convert_alpha()
+        surf = pygame.image.load(key).convert()
         BANNER_CACHE[key] = surf
         return surf
     except Exception:
@@ -112,6 +112,12 @@ def load_game_data(data_path):
                         game["bg"] = parse_color(game.get("bg", (25, 15, 35)), (25, 15, 35))
                         game["programmer"] = game.get("programmer", []) or []
                         game["banner_surf"] = load_banner(game.get("banner"))
+                        # After: game["banner_surf"] = load_banner(game.get("banner"))
+                        # Add:
+                        if game["banner_surf"]:
+                            game["banner_surf"] = pygame.transform.scale(
+                                game["banner_surf"], (SCREEN_W, SCREEN_H)
+                            )
                         game_folder = game.get("start_folder") or game.get("game_folder") or ""
                         game_file = game.get("game_path", "")
                         if game_folder and game_file:
@@ -125,6 +131,9 @@ def load_game_data(data_path):
                         game["game_path_abs"] = abs_path
                         game["game_cwd"] = os.path.abspath(os.path.join(data_dir, game_folder)) if game_folder else (os.path.dirname(abs_path) if abs_path else None)
                         game["art_surf"] = load_banner(game.get("art"))   # reuses the same loader
+                        if game["art_surf"]:
+                            s = SLOT_STYLE[0]
+                            game["art_surf"] = pygame.transform.scale(game["art_surf"], (s["w"], s["h"]))
                     return games
         except Exception:
             pass
@@ -169,7 +178,7 @@ def render_card(game, style, selected=False, tick=0):
     art = game.get("art_surf")
     if art:
         # Scale art to fill the card (stretch from 300×600 source → card size)
-        art_scaled = pygame.transform.smoothscale(art, (w, h))
+        art_scaled = pygame.transform.scale(art, (w, h))
 
         # Clip to rounded rect by using a mask surface
         mask = pygame.Surface((w, h), pygame.SRCALPHA)
@@ -465,9 +474,8 @@ def main():
         # Background banner from selected game
         active_banner = games[current].get("banner_surf")
         if active_banner:
-            banner_scaled = pygame.transform.smoothscale(active_banner, (SCREEN_W, SCREEN_H))
-            banner_scaled.set_alpha(90)
-            screen.blit(banner_scaled, (0, 0))
+            active_banner.set_alpha(90)
+            screen.blit(active_banner, (0, 0))
             draw_rounded_rect(screen, (0, 0, 0), (0, 0, SCREEN_W, SCREEN_H), radius=0, alpha=70)
 
         # Subtle background grid lines
