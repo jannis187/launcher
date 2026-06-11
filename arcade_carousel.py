@@ -14,7 +14,7 @@ import math
 # ── CONFIG ─────────────────────────────────────────────────────────────────────
 SCREEN_W, SCREEN_H = 1280, 720
 FPS = 60
-CAROUSEL_ANIM_SPEED = 10.0
+CAROUSEL_ANIM_SPEED = 5.0
 BASE_DIR = os.path.dirname(__file__)
 DATA_JSON = os.path.join(BASE_DIR, "data.json")
 BANNER_CACHE = {}
@@ -460,7 +460,7 @@ def main():
                     pygame.display.flip()
                     pygame.time.wait(120)
                     screen = launch_game(selected_game)
-                elif event.key == pygame.K_ESCAPE:
+                elif event.key == pygame.K_CAPSLOCK:
                     running = False
 
         # Animate offset toward 0
