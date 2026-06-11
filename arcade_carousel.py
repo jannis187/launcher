@@ -328,7 +328,7 @@ def draw_header(screen, font_big, font_small, tick):
 
     # Blinking sub-text
     if (tick // 30) % 2 == 0:
-        sub = "◄  ARROW KEYS TO NAVIGATE  |  ENTER TO SELECT  ►"
+        sub = "◄  START TO SELECT  ►"
         ss = font_small.render(sub, True, MUTED_TEXT)
         screen.blit(ss, ((SCREEN_W - ss.get_width()) // 2, 58))
 
@@ -337,13 +337,12 @@ def draw_header(screen, font_big, font_small, tick):
 def draw_controls(screen, font_small):
     hints = [
         ("◄ ►", "Navigate"),
-        ("ENTER", "Select"),
-        ("ESC", "Quit"),
+        ("START", "Select"),
     ]
     gap = 220
     total = gap * len(hints)
     sx = (SCREEN_W - total) // 2 + gap // 2
-    y = SCREEN_H - 36
+    y = SCREEN_H - 50
     for key, label in hints:
         # Key pill
         kw = font_small.size(key)[0] + 20
@@ -515,7 +514,7 @@ def main():
 
         # ── Info panel ─────────────────────────────────────────────────────────
         panel_h = 120
-        panel_y = SCREEN_H - panel_h - 52
+        panel_y = SCREEN_H - panel_h - 70
         draw_info_panel(
             screen,
             games[current],

@@ -13,8 +13,8 @@
     "game_path": "menu.py"
   },
   {
-    "title": "THE MUDER BUTCHER",
-    "genre": "ACION, FIGHTER GAME",
+    "title": "NEXORA JUMP",
+    "genre": "ARCADE, JUMP AND RUN",
     "year": "2016",
     "players": "2P",
     "accent": "#f0fff0",
@@ -22,12 +22,12 @@
     "banner": "banner_default.bmp",
     "programmer": ["Bite he Byte Games", "Main: Kilian D.", "Jannis S."],
     "desc": "",
-    "start_folder": "..",
-    "game_path": "menu.py"
+    "start_folder": "../sternensprung",
+    "game_path": "main.py"
   },
   {
-    "title": "DER BUTCHER",
-    "genre": "ACION, FIGHTER GAME",
+    "title": "STARMANS",
+    "genre": "SURVIVAL, OPEN WORLD",
     "year": "2016",
     "players": "2P",
     "accent": "#f0c2f0",
@@ -35,7 +35,7 @@
     "banner": "banner_default.bmp",
     "programmer": ["Bite he Byte Games", "Main: Kilian D.", "Jannis S."],
     "desc": "",
-    "start_folder": "..",
+    "start_folder": "../starmans",
     "game_path": "menu.py"
   }
 ]
