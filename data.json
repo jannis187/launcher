@@ -34,6 +34,7 @@
     "players": "2P",
     "accent": "#4c84d9",
     "bg": "#0012c3",
+    "art": "banner_starmans.png",
     "banner": "hyperspace_sasws_1.jpg",
     "programmer": ["Moritz G.", "Kilian D."],
     "desc": "",
@@ -50,5 +51,17 @@
     "desc": "Käsekiste ist ein fesselndes Physik-Puzzlespiel, in dem du einen rollenden Käse durch ein komplexes vertikales Labyrinth steuerst. Nutze die Schwerkraft und weiche gefährlichen Fallen aus, um zu beweisen, dass du die begehrte Leckerei direkt in die Kiste befördern kannst!",
     "start_folder": "../kaesekiste",
     "game_path": "main.py"
+  },
+  {
+    "title": "BATUHAN'S SPIEL",
+    "accent": "#4c84d9",
+    "bg": "#0012c3",
+    "banner": "batu.png",
+    "programmer": ["Batuhan C."],
+    "desc": "",
+    "start_folder": "../hyperspace_sasws/src/game",
+    "game_path": "game.py",
+    "genre": "ARCADE, JUMP AND RUN",
+    "year": "2024"
   }
 ]
