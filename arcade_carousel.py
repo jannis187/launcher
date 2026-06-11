@@ -471,10 +471,10 @@ def main():
             draw_rounded_rect(screen, (0, 0, 0), (0, 0, SCREEN_W, SCREEN_H), radius=0, alpha=70)
 
         # Subtle background grid lines
-        for gy in range(0, SCREEN_H, 40):
-            pygame.draw.line(screen, (255, 255, 255, 8), (0, gy), (SCREEN_W, gy))
-        for gx in range(0, SCREEN_W, 80):
-            pygame.draw.line(screen, (255, 255, 255, 6), (gx, 0), (gx, SCREEN_H))
+        #for gy in range(0, SCREEN_H, 40):
+        #    pygame.draw.line(screen, (255, 255, 255, 8), (0, gy), (SCREEN_W, gy))
+        #for gx in range(0, SCREEN_W, 80):
+        #    pygame.draw.line(screen, (255, 255, 255, 6), (gx, 0), (gx, SCREEN_H))
 
         draw_header(screen, font_header, font_sub, tick)
 
