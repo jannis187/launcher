@@ -124,6 +124,7 @@ def load_game_data(data_path):
                         game["game_file"] = game_file
                         game["game_path_abs"] = abs_path
                         game["game_cwd"] = os.path.abspath(os.path.join(data_dir, game_folder)) if game_folder else (os.path.dirname(abs_path) if abs_path else None)
+                        game["art_surf"] = load_banner(game.get("art"))   # reuses the same loader
                     return games
         except Exception:
             pass
@@ -157,18 +158,97 @@ def scanline_overlay(surf, line_height=4, alpha=30):
     surf.blit(overlay, (0, 0))
 
 
-# ── CARD RENDERER ──────────────────────────────────────────────────────────────
 def render_card(game, style, selected=False, tick=0):
     """Build a card Surface for a single game entry."""
     w, h = style["w"], style["h"]
     surf = pygame.Surface((w, h), pygame.SRCALPHA)
 
-    # Background
+    # ── Background ────────────────────────────────────────────────────────────
     draw_rounded_rect(surf, game["bg"], (0, 0, w, h), radius=14, alpha=255)
 
+    art = game.get("art_surf")
+    if art:
+        # Scale art to fill the card (stretch from 300×600 source → card size)
+        art_scaled = pygame.transform.smoothscale(art, (w, h))
+
+        # Clip to rounded rect by using a mask surface
+        mask = pygame.Surface((w, h), pygame.SRCALPHA)
+        pygame.draw.rect(mask, (255, 255, 255, 255), (0, 0, w, h), border_radius=14)
+        art_scaled.blit(mask, (0, 0), special_flags=pygame.BLEND_RGBA_MIN)
+        surf.blit(art_scaled, (0, 0))
+
+        # Dark gradient strip at the bottom for the title
+        gradient_h = max(38, int(h * 0.22))
+        gradient = pygame.Surface((w, gradient_h), pygame.SRCALPHA)
+        for row in range(gradient_h):
+            alpha = int(200 * (row / gradient_h))
+            pygame.draw.line(gradient, (0, 0, 0, alpha), (0, row), (w, row))
+        surf.blit(gradient, (0, h - gradient_h))
+
+        # Title over the gradient
+        title_size = max(13, int(w * 0.075))
+        try:
+            font_title = pygame.font.SysFont("couriernew,consolas,monospace", title_size, bold=True)
+        except Exception:
+            font_title = pygame.font.SysFont(None, title_size)
+
+        pad = 10
+        ty = h - font_title.get_height() - pad
+
+    else:
+        # ── Fallback: text-only card (original layout) ────────────────────────
+        fade = 0.5 * math.sin(tick * 0.03)
+        info_alpha = int(200 - 100 * fade)
+
+        title_size = max(14, int(w * 0.078))
+        genre_size = max(11, int(w * 0.048))
+        label_size = max(10, int(w * 0.042))
+
+        try:
+            font_title = pygame.font.SysFont("couriernew,consolas,monospace", title_size, bold=True)
+            font_genre = pygame.font.SysFont("arial,helvetica,sans-serif",    genre_size)
+            font_label = pygame.font.SysFont("arial,helvetica,sans-serif",    label_size)
+        except Exception:
+            font_title = pygame.font.SysFont(None, title_size)
+            font_genre = pygame.font.SysFont(None, genre_size)
+            font_label = pygame.font.SysFont(None, label_size)
+
+        pad = 14
+        lines = game["title"].split()
+        mid = len(lines) // 2 or 1
+        title_lines = [" ".join(lines[:mid]), " ".join(lines[mid:])] if len(lines) > 1 else lines
+        ty = pad
+        for line in title_lines:
+            draw_text_shadow(surf, line, font_title, game["accent"], pad, ty)
+            ty += font_title.get_height() + 2
+
+        ty += 6
+        pygame.draw.line(surf, (*game["accent"], info_alpha), (pad, ty), (w - pad, ty), 1)
+        ty += 8
+        draw_text_shadow(surf, game["genre"], font_genre, MUTED_TEXT, pad, ty, shadow_offset=1, alpha=info_alpha)
+        ty += font_genre.get_height() + 10
+
+        for person in game.get("programmer", []):
+            draw_text_shadow(surf, person, font_label, WHITE, pad + 2, ty, shadow_offset=1, shadow_alpha=100, alpha=info_alpha)
+            ty += font_label.get_height() + 4
+
+        if selected:
+            stars = "#" * game.get("rating", 0) + "+" * (5 - game.get("rating", 0))
+            draw_text_shadow(surf, stars, font_genre, NEON_YELLOW, pad, ty, shadow_offset=1, alpha=info_alpha)
+            ty += font_genre.get_height() + 10
+
+        cx2 = pad
+        for tag in [game.get("players", ""), game.get("year", "")]:
+            if not tag:
+                continue
+            tw = font_label.size(tag)[0] + 16
+            draw_rounded_rect(surf, (255, 255, 255), (cx2, ty, tw, label_size + 10), radius=5, alpha=max(20, info_alpha // 2))
+            draw_text_shadow(surf, tag, font_label, WHITE, cx2 + 8, ty + 4, shadow_offset=1, alpha=info_alpha)
+            cx2 += tw + 8
+
+    # ── Border (always drawn on top) ──────────────────────────────────────────
     fade = 0.5 * math.sin(tick * 0.03)
-    info_alpha = int(200 - 100 * fade)
-    border_alpha = info_alpha if selected else 80
+    border_alpha = int(200 - 100 * fade) if selected else 80
     border_w = 2 if selected else 1
     pygame.draw.rect(
         surf,
@@ -178,72 +258,28 @@ def render_card(game, style, selected=False, tick=0):
         border_radius=14,
     )
 
-    # ── fonts scaled to card width ─────────────────────────────────────────────
-    title_size  = max(14, int(w * 0.078))
-    genre_size  = max(11, int(w * 0.048))
-    label_size  = max(10, int(w * 0.042))
-
-    try:
-        font_title = pygame.font.SysFont("couriernew,consolas,monospace", title_size, bold=True)
-        font_genre = pygame.font.SysFont("arial,helvetica,sans-serif",    genre_size, bold=False)
-        font_label = pygame.font.SysFont("arial,helvetica,sans-serif",    label_size, bold=False)
-    except Exception:
-        font_title = pygame.font.SysFont(None, title_size)
-        font_genre = pygame.font.SysFont(None, genre_size)
-        font_label = pygame.font.SysFont(None, label_size)
-
-    pad = 14
-
-    # ── Title ──────────────────────────────────────────────────────────────────
-    lines = game["title"].split()
-    # Try to split into two balanced lines
-    mid = len(lines) // 2 or 1
-    title_lines = [" ".join(lines[:mid]), " ".join(lines[mid:])] if len(lines) > 1 else lines
-    ty = pad
-    for line in title_lines:
-        draw_text_shadow(surf, line, font_title, game["accent"], pad, ty)
-        ty += font_title.get_height() + 2
-
-    # ── Divider ────────────────────────────────────────────────────────────────
-    ty += 6
-    pygame.draw.line(surf, (*game["accent"], info_alpha), (pad, ty), (w - pad, ty), 1)
-    ty += 8
-
-    # ── Genre ─────────────────────────────────────────────────────────────────
-    draw_text_shadow(surf, game["genre"], font_genre, MUTED_TEXT, pad, ty, shadow_offset=1, alpha=info_alpha)
-    ty += font_genre.get_height() + 10
-
-    # ── Programmer list ───────────────────────────────────────────────────────
-    programmer_lines = game.get("programmer", [])
-    for person in programmer_lines:
-        draw_text_shadow(surf, person, font_label, WHITE, pad + 2, ty, shadow_offset=1, shadow_alpha=100, alpha=info_alpha)
-        ty += font_label.get_height() + 4
-    if programmer_lines:
-        ty += 4
-
-    # ── Stars (only on selected / large card) ─────────────────────────────────
-    if selected:
-        stars = "#" * game.get("rating", 0) + "+" * (5 - game.get("rating", 0))
-        draw_text_shadow(surf, stars, font_genre, NEON_YELLOW, pad, ty, shadow_offset=1, alpha=info_alpha)
-        ty += font_genre.get_height() + 10
-
-    # ── Meta chips ─────────────────────────────────────────────────────────────
-    cx = pad
-    for tag in [game.get("players", ""), game.get("year", "")]:
-        if not tag:
-            continue
-        tw = font_label.size(tag)[0] + 16
-        draw_rounded_rect(surf, (255, 255, 255), (cx, ty, tw, label_size + 10), radius=5, alpha=max(20, info_alpha // 2))
-        draw_text_shadow(surf, tag, font_label, WHITE, cx + 8, ty + 4, shadow_offset=1, alpha=info_alpha)
-        cx += tw + 8
-
     return surf
 
+def blur_region(screen, rect, scale=0.1):
+    x, y, w, h = rect
+
+    # Grab background
+    region = screen.subsurface(rect).copy()
+
+    # Downscale then upscale
+    small = pygame.transform.smoothscale(
+        region,
+        (max(1, int(w * scale)), max(1, int(h * scale)))
+    )
+    blurred = pygame.transform.smoothscale(small, (w, h))
+
+    screen.blit(blurred, (x, y))
 
 # ── INFO PANEL ─────────────────────────────────────────────────────────────────
 def draw_info_panel(screen, game, rect, font_title, font_body):
     x, y, w, h = rect
-    draw_rounded_rect(screen, (20, 15, 45), (x, y, w, h), radius=12, alpha=210)
+    blur_region(screen, (x,y,w,h), scale=0.08)
+    draw_rounded_rect(screen, (*game["accent"], 100), (x, y, w, h), radius=12, alpha=70)
     pygame.draw.rect(screen, (*game["accent"], 100), (x, y, w, h), width=1, border_radius=12)
 
     pad = 18
@@ -263,8 +299,8 @@ def draw_info_panel(screen, game, rect, font_title, font_body):
     programmers = game.get("programmer", [])
     if programmers:
         cy += 6
-        credits = "Programmer: " + ", ".join(programmers)
-        draw_text_shadow(screen, credits, font_body, NEON_CYAN, x + pad, cy, shadow_offset=1, shadow_alpha=120)
+        credits = "Entwickelt von: " + ", ".join(programmers)
+        draw_text_shadow(screen, credits, font_body, (255,255,255), x + pad, cy, shadow_offset=1, shadow_alpha=120)
 
 
 def launch_game(game):
@@ -317,7 +353,7 @@ def launch_game(game):
 
 # ── HEADER ─────────────────────────────────────────────────────────────────────
 def draw_header(screen, font_big, font_small, tick):
-    title = "SELECT YOUR GAME"
+    title = "WÄHLE EIN SPIEL"
     ts = font_big.render(title, True, WHITE)
     tx = (SCREEN_W - ts.get_width()) // 2
     # Glow effect: draw title twice, slightly blurred by offset
@@ -328,7 +364,7 @@ def draw_header(screen, font_big, font_small, tick):
 
     # Blinking sub-text
     if (tick // 30) % 2 == 0:
-        sub = "◄  START TO SELECT  ►"
+        sub = "◄  DRÜCKE START  ►"
         ss = font_small.render(sub, True, MUTED_TEXT)
         screen.blit(ss, ((SCREEN_W - ss.get_width()) // 2, 58))
 
@@ -336,8 +372,8 @@ def draw_header(screen, font_big, font_small, tick):
 # ── CONTROLS HINT ──────────────────────────────────────────────────────────────
 def draw_controls(screen, font_small):
     hints = [
-        ("◄ ►", "Navigate"),
-        ("START", "Select"),
+        ("◄ ►", "Navigieren"),
+        ("*", "Auswählen"),
     ]
     gap = 220
     total = gap * len(hints)
