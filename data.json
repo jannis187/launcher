@@ -9,7 +9,7 @@
     "banner": "tmb.png",
     "art": "tmb_banner.jpg",
     "programmer": ["Bite The Byte Games", "Kilian D.", "Jannis S."],
-    "desc": "",
+    "desc": "The Marauder Butcher ist ein anspruchsvolles 2D-Arcade-Kampfspiel, in dem du als magischer Ritter in 20 Kämpfen ein korruptes Königreich befreist. Wer den finalen Boss bezwingt, kann sich in drei Leaderboards nach Bestzeit oder minimalem Schaden verewigen sowie einem ultimativem Leaderboard",
     "start_folder": "../tmb",
     "game_path": "menu.py"
   },
@@ -79,6 +79,18 @@
     "year": "2024"
   },
   {
+    "title": "ROGUELIKE",
+    "desc": "",
+    "accent": "#f2f252",
+    "bg": "#0012c3",
+    "art": "mike_art.png",
+    "programmer": ["Mike H."],
+    "start_folder": "../mike",
+    "game_path": "main.py",
+    "genre": "ROGUELIKE",
+    "year": "2024"
+  },
+  {
     "title": "TETRIS 1vs1",
     "accent": "#52f2d0",
     "bg": "#0012c3",
@@ -89,16 +101,6 @@
     "start_folder": ".",
     "game_path": "tetris_arcade.py",
     "genre": "ARCADE",
-    "year": "2024"
-  },
-  {
-    "title": "Roguelike",
-    "accent": "#f2f252",
-    "bg": "#0012c3",
-    "programmer": ["Mike H."],
-    "start_folder": "../mike",
-    "game_path": "main.py",
-    "genre": "ROGUELIKE",
     "year": "2024"
   }
 ]
