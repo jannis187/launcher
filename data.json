@@ -55,7 +55,7 @@
   {
     "title": "Schatten von Eldrath",
     "accent": "#4c84d9",
-    "bg": "#0012c3",
+    "bg": "#3a29a6",
     "banner": "batu.png",
     "art": "batu_art.png",
     "programmer": ["Batuhan C."],
@@ -67,7 +67,7 @@
   },
   {
     "title": "SNAKE",
-    "accent": "#4c84d9",
+    "accent": "#34eb34",
     "bg": "#0012c3",
     "art": "snake_art.png",
     "programmer": ["Moritz G."],
@@ -79,7 +79,7 @@
   },
   {
     "title": "TETRIS 1vs1",
-    "accent": "#4c84d9",
+    "accent": "#52f2d0",
     "bg": "#0012c3",
     "art": "tetris.png",
     "banner": "tetris_bg.png",
