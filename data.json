@@ -71,7 +71,7 @@
     "art": "snake_art.png",
     "programmer": ["Moritz G."],
     "desc": "Ein klassisches Snake-Spiel, von Claude neuinterpretiert.",
-    "start_folder": "..",
+    "start_folder": ".",
     "game_path": "snake_arcade.py",
     "genre": "ARCADE",
     "year": "2024"
@@ -83,7 +83,7 @@
     "art": "tetris.png",
     "programmer": ["Moritz G."],
     "desc": "Multiplayer Tetris.",
-    "start_folder": "..",
+    "start_folder": ".",
     "game_path": "tetris_arcade.py",
     "genre": "ARCADE",
     "year": "2024"
