@@ -70,6 +70,7 @@
     "accent": "#34eb34",
     "bg": "#0012c3",
     "art": "snake_art.png",
+    "banner": "snake_bg.png",
     "programmer": ["Moritz G."],
     "desc": "Ein klassisches Snake-Spiel, von Claude neuinterpretiert.",
     "start_folder": ".",
