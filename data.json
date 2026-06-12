@@ -60,7 +60,7 @@
     "programmer": ["Batuhan C."],
     "desc": "",
     "start_folder": "../batu",
-    "game_path": "menu.py",
+    "game_path": "Basiscode2.py",
     "genre": "ARCADE, JUMP AND RUN",
     "year": "2024"
   },
@@ -81,6 +81,7 @@
     "accent": "#4c84d9",
     "bg": "#0012c3",
     "art": "tetris.png",
+    "banner": "tetris_bg.png",
     "programmer": ["Moritz G."],
     "desc": "Multiplayer Tetris.",
     "start_folder": ".",
