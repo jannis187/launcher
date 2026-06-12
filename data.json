@@ -59,8 +59,8 @@
     "banner": "batu.png",
     "programmer": ["Batuhan C."],
     "desc": "",
-    "start_folder": "../hyperspace_sasws/src/game",
-    "game_path": "game.py",
+    "start_folder": "../batu",
+    "game_path": "menu.py",
     "genre": "ARCADE, JUMP AND RUN",
     "year": "2024"
   },
