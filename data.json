@@ -63,5 +63,29 @@
     "game_path": "game.py",
     "genre": "ARCADE, JUMP AND RUN",
     "year": "2024"
+  },
+  {
+    "title": "SNAKE",
+    "accent": "#4c84d9",
+    "bg": "#0012c3",
+    "art": "snake_art.png",
+    "programmer": ["Moritz G."],
+    "desc": "Ein klassisches Snake-Spiel, von Claude neuinterpretiert.",
+    "start_folder": "..",
+    "game_path": "snake_arcade.py",
+    "genre": "ARCADE",
+    "year": "2024"
+  },
+  {
+    "title": "TETRIS 1vs1",
+    "accent": "#4c84d9",
+    "bg": "#0012c3",
+    "art": "tetris.png",
+    "programmer": ["Moritz G."],
+    "desc": "Multiplayer Tetris.",
+    "start_folder": "..",
+    "game_path": "tetris_arcade.py",
+    "genre": "ARCADE",
+    "year": "2024"
   }
 ]
