@@ -57,6 +57,7 @@
     "accent": "#4c84d9",
     "bg": "#0012c3",
     "banner": "batu.png",
+    "art": "batu_art.png",
     "programmer": ["Batuhan C."],
     "desc": "",
     "start_folder": "../batu",
